@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@aha/api": ["packages/api/src/index.ts"],
+      "@aha/prisma": ["packages/prisma/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

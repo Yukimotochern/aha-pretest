@@ -1,0 +1,79 @@
+{
+  "name": "frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/frontend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/packages/frontend"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "frontend:build",
+        "proxyConfig": "packages/frontend/proxy.conf.json"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "frontend:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "frontend:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nrwl/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "frontend:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "frontend:build:development"
+        },
+        "production": {
+          "buildTarget": "frontend:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/vite:test",
+      "outputs": ["coverage/packages/frontend"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/frontend"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/frontend/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/web:file-server",
+      "options": {
+        "buildTarget": "frontend:build"
+      }
+    }
+  },
+  "tags": []
+}

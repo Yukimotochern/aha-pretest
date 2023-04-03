@@ -7,10 +7,10 @@
     "build": {
       "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "defaultConfiguration": "development",
       "options": {
         "target": "node",
-        "compiler": "tsc",
+        "compiler": "swc",
         "outputPath": "dist/packages/backend",
         "main": "packages/backend/src/main.ts",
         "tsConfig": "packages/backend/tsconfig.app.json",
@@ -21,7 +21,10 @@
       "configurations": {
         "development": {},
         "production": {
-          "generateLockfile": true
+          "generateLockfile": true,
+          "extractLicenses": true,
+          "generatePackageJson": true,
+          "optimization": true
         }
       }
     },
@@ -29,7 +32,8 @@
       "executor": "@nrwl/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "backend:build"
+        "buildTarget": "backend:build",
+        "inspect": false
       },
       "configurations": {
         "development": {

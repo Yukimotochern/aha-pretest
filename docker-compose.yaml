@@ -1,0 +1,81 @@
+version: "3.9"
+services:
+  # app services
+  postgres:
+    image: "postgres:15.2-alpine"
+    restart: always
+    env_file:
+      - "./config/postgres/.env.local"
+    volumes:
+      - "aha_pg_data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+  redis:
+    image: "redis:7.0-alpine"
+    restart: always
+    env_file:
+      - "./config/redis/.env.local"
+    volumes:
+      - "aha_redis_data:/data"
+    ports:
+      - "6379:6379"
+  backend:
+    build:
+      context: .
+      dockerfile: "./dockerfiles/Dockerfile"
+    command: "npx nx run backend:serve:development"
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/app
+      - aha_node_modules:/app/node_modules
+    env_file:
+      - "./packages/backend/.env.local"
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+    depends_on:
+      - redis
+      - postgres
+  frontend:
+    build:
+      context: .
+      dockerfile: "./dockerfiles/Dockerfile"
+    command: "npx nx run frontend:serve:development"
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./:/app
+      - aha_node_modules:/app/node_modules
+    env_file:
+      - "./packages/backend/.env.local"
+    environment:
+      - VITE_PROXY_HOST=backend
+    tty: true
+  # utility services
+  # ex: npm run npm install axios
+  npm:
+    build:
+      context: .
+      dockerfile: "./dockerfiles/npm.Dockerfile"
+    volumes:
+      - ./:/app
+      - aha_node_modules:/app/node_modules
+    stdin_open: true
+    tty: true
+    entrypoint: npm
+  # ex: npm run npm install axios
+  prisma:
+    build:
+      context: .
+      dockerfile: "./dockerfiles/npm.Dockerfile"
+    volumes:
+      - ./:/app
+      - aha_node_modules:/app/node_modules
+    stdin_open: true
+    tty: true
+    entrypoint: npm
+volumes:
+  aha_pg_data:
+  aha_redis_data:
+  aha_node_modules:

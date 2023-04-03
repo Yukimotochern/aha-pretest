@@ -24,8 +24,7 @@
       "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "frontend:build",
-        "proxyConfig": "packages/frontend/proxy.conf.json"
+        "buildTarget": "frontend:build"
       },
       "configurations": {
         "development": {

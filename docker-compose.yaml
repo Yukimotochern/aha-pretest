@@ -55,26 +55,29 @@ services:
   # utility services
   # ex: npm run npm install axios
   npm:
-    build:
-      context: .
-      dockerfile: "./dockerfiles/npm.Dockerfile"
+    image: "node:18.15-alpine"
+    working_dir: /app
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
-    stdin_open: true
-    tty: true
     entrypoint: npm
   # ex: npm run npm install axios
   prisma:
-    build:
-      context: .
-      dockerfile: "./dockerfiles/npm.Dockerfile"
+    image: "node:18.15-alpine"
+    working_dir: /app
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
-    stdin_open: true
-    tty: true
-    entrypoint: npm
+    env_file:
+      - "packages/prisma/.env.local"
+    entrypoint: ["npx", "prisma"]
+  nx:
+    image: "node:18.15-alpine"
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - aha_node_modules:/app/node_modules
+    entrypoint: ["npx", "nx"]
 volumes:
   aha_pg_data:
   aha_redis_data:

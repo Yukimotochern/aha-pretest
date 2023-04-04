@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@aha/api": ["packages/api/src/index.ts"],
-      "@aha/prisma": ["packages/prisma/src/index.ts"]
+      "@aha/prisma": ["packages/prisma/src/index.ts"],
+      "@aha/backend": ["packages/backend/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]

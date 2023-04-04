@@ -2,16 +2,21 @@ import { randomUUID } from 'crypto';
 import { FastifyServerOptions, preHandlerHookHandler } from 'fastify';
 import pino from 'pino';
 import pinoCaller from 'pino-caller';
+import { environment } from '../environments/environment';
+
+const { isDev } = environment;
 
 export const logger = pinoCaller(
   pino({
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        ignore:
-          'pid,hostname,time,caller,responseTime,req.hostname,req.remoteAddress,req.remotePort,req.headers.host,req.headers.user-agent,req.headers.accept,req.headers.cache-control,req.headers.postman-token,req.headers.accept-encoding,req.headers.connection,req.headers.accept-language,req.headers.referer,req.headers.sec-fetch-dest,req.headers.sec-fetch-mode,req.headers.sec-fetch-site,req.headers.content-type,req.headers.sec-ch-ua-mobile,req.headers.dnt,req.headers.sec-ch-ua-platform,req.headers.sec-ch-ua,req.headers.pragma,req.headers',
+    ...(isDev && {
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          ignore:
+            'pid,hostname,time,caller,response(Time,req.hostname,req.remoteAddress,req.remotePort,req.headers.host,req.headers.user-agent,req.headers.accept,req.headers.cache-control,req.headers.postman-token,req.headers.accept-encoding,req.headers.connection,req.headers.accept-language,req.headers.referer,req.headers.sec-fetch-dest,req.headers.sec-fetch-mode,req.headers.sec-fetch-site,req.headers.content-type,req.headers.sec-ch-ua-mobile,req.headers.dnt,req.headers.sec-ch-ua-platform,req.headers.sec-ch-ua,req.headers.pragma,req.headers',
+        },
       },
-    },
+    }),
     serializers: {
       req(request) {
         return {
@@ -56,8 +61,5 @@ export const bodyLogger: preHandlerHookHandler = (req, reply, done) => {
 export const genReqIdFunctionCreator: () => FastifyServerOptions['genReqId'] =
   () => {
     let initialRequestId = 0;
-    return () =>
-      process.env.NODE_ENV === 'development'
-        ? String(initialRequestId++)
-        : randomUUID();
+    return () => (isDev ? String(initialRequestId++) : randomUUID());
   };

@@ -1,5 +1,5 @@
-import { TRPCLink, createTRPCProxyClient } from '@trpc/client';
-import { AnyRouter, ProcedureType } from '@trpc/server';
+import { TRPCLink } from '@trpc/client';
+import { AnyRouter } from '@trpc/server';
 import { observable } from '@trpc/server/observable';
 import { get as lodashGet } from 'lodash';
 import { ZodType } from 'zod';
@@ -105,13 +105,15 @@ export const unwrapStatusLayerLink: TRPCLink<AnyRouter> = () => {
   };
 };
 
+type ClientCallToUnwrap = 'query' | 'mutate';
+
 type UnwrapStatusLayer<Client> = {
-  [key in keyof Client]: key extends ProcedureType
+  [key in keyof Client]: key extends ClientCallToUnwrap
     ? Client[key] extends (...rest: infer arguments) => infer response
       ? Awaited<response> & { status: 'ok' } extends { data: infer Data }
         ? (...rest: arguments) => Promise<Data>
-        : never
-      : never
+        : Client[key]
+      : Client[key]
     : UnwrapStatusLayer<Client[key]>;
 };
 /**
@@ -119,9 +121,7 @@ type UnwrapStatusLayer<Client> = {
  * data are unwrapped from response. The real implementation is in
  * the unwrapStatusLayerLink.
  */
-export const unwrapStatusLayer: <
-  Client extends ReturnType<typeof createTRPCProxyClient<AnyRouter>>
->(
+export const unwrapStatusLayer: <Client>(
   client: Client
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) => UnwrapStatusLayer<Client> = (client) => client as any;

@@ -1,15 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "outDir": "../../out-tsc",
     "module": "commonjs",
-    "outDir": "../../dist",
     "types": ["node"],
     "composite": true
   },
   "references": [
     {
-      "path": "../prisma/tsconfig.lib.json"
+      "path": "../api/tsconfig.check.json"
     },
+    {
+      "path": "../prisma/tsconfig.check.json"
+    }
   ],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "include": ["src/**/*.ts"]

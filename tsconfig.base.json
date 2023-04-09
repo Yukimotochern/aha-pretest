@@ -4,7 +4,12 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
+    "strict": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -16,8 +21,9 @@
     "baseUrl": ".",
     "paths": {
       "@aha/api": ["packages/api/src/index.ts"],
+      "@aha/backend": ["packages/backend/src/main.ts"],
       "@aha/prisma": ["packages/prisma/src/index.ts"],
-      "@aha/backend": ["packages/backend/src/index.ts"],
+      "*": ["*", "out-tsc/*", "dist/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

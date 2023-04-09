@@ -3,8 +3,8 @@
     "jsx": "react-jsx",
     "allowJs": false,
     "esModuleInterop": false,
+    "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "types": ["vite/client", "vitest"]
   },
   "files": [],

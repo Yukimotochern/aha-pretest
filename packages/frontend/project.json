@@ -72,6 +72,12 @@
       "options": {
         "buildTarget": "frontend:build"
       }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc -p packages/frontend/tsconfig.check.json"
+      }
     }
   },
   "tags": []

@@ -1,14 +1,14 @@
 import { inferAsyncReturnType } from '@trpc/server';
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
 import { okResponse, errorResponse } from '@aha/api';
-import { PrismaClient } from '@aha/prisma';
+import { PrismaClient } from '@prisma/client';
 
-import { environment } from '../environments/environment';
+import { env } from '../environments/environment';
 
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: environment.postgresDatabaseUrl,
+      url: env.postgresDatabaseUrl,
     },
   },
 });

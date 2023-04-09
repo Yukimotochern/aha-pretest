@@ -2,9 +2,9 @@ import { randomUUID } from 'crypto';
 import { FastifyServerOptions, preHandlerHookHandler } from 'fastify';
 import pino from 'pino';
 import pinoCaller from 'pino-caller';
-import { environment } from '../environments/environment';
+import { env } from '../environments/environment';
 
-const { isDev } = environment;
+const { isDev } = env;
 
 export const logger = pinoCaller(
   pino({

@@ -5,7 +5,7 @@ const {
   user: { get, post },
 } = api;
 
-export const userProcedure = router({
+export const userProcedures = router({
   get: publicProcedure
     .input(get.input)
     .output(get.output.schema)
@@ -13,7 +13,10 @@ export const userProcedure = router({
       const email = await redis.get('email');
       logger.info({ email }, 'hi hi');
       const user = await prisma.user.findFirst();
-      return okResponse(user);
+      if (user) {
+        return okResponse(user);
+      }
+      throw new Error('jkjkj');
     }),
   post: publicProcedure
     .input(post.input)

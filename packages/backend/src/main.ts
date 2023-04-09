@@ -14,3 +14,5 @@ server.listen(
     }
   }
 );
+
+export type { AppRouter } from './trpc/trpc.router';

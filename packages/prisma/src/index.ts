@@ -1,2 +1,1 @@
-export * from './generated/client';
-export * as prismaZodSchema from './generated/zod';
+export * from './generated';

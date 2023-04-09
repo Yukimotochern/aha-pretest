@@ -5,13 +5,13 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/client"
+  output   = "../../../node_modules/.prisma/client"
 }
 
 generator zod {
   provider                  = "zod-prisma-types"
-  output                    = "../src/generated/zod"
-  prismaClientPath          = "../client"
+  output                    = "../src/generated"
+  prismaClientPath          = "@prisma/client"
   createInputTypes          = true
   createModelTypes          = true
   createRelationValuesTypes = true

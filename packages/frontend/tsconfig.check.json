@@ -1,19 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist",
+    "outDir": "../../out-tsc",
     "types": ["node", "vite/client"],
-    "composite": true
   },
   "references": [
     {
-      "path": "../backend/tsconfig.app.json"
+      "path": "../backend/tsconfig.check.json"
     },
     {
-      "path": "../api/tsconfig.lib.json"
+      "path": "../api/tsconfig.check.json"
     },
     {
-      "path": "../prisma/tsconfig.lib.json"
+      "path": "../prisma/tsconfig.check.json"
     }
   ],
   "files": [

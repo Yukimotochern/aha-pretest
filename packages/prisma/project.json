@@ -35,6 +35,17 @@
           "codeCoverage": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "out-tsc/packages/prisma",
+        "tsConfig": "packages/prisma/tsconfig.check.json",
+        "packageJson": "packages/prisma/package.json",
+        "main": "packages/prisma/src/index.ts",
+        "assets": ["packages/prisma/*.md"]
+      }
     }
   },
   "tags": []

@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { prismaZodSchema as pzs } from '@aha/prisma';
+import * as zp from '@aha/prisma';
 import type { ProcedureStructure } from '../../api.types';
 import { response } from '../../backend/response';
 
 export const user = {
   get: {
-    input: pzs.UserFindFirstArgsSchema,
-    output: response(pzs.UserSchema)
+    input: zp.UserFindFirstArgsSchema,
+    output: response(zp.UserSchema)
       .error({
         code: 'abcdef',
         message: '',
@@ -19,7 +19,7 @@ export const user = {
       }),
   },
   post: {
-    input: pzs.UserCreateInputSchema,
-    output: response(pzs.UserSchema),
+    input: zp.UserCreateInputSchema,
+    output: response(zp.UserSchema),
   },
 } satisfies ProcedureStructure;

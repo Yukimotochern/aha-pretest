@@ -4,6 +4,7 @@ import {
   TRPCClientError,
 } from '@trpc/client';
 import superjson from 'superjson';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import type { AppRouter } from '@aha/backend';
 import { unwrapStatusLayerLink, unwrapStatusLayer } from '@aha/api';
 

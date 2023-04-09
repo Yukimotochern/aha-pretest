@@ -68,6 +68,17 @@
     "docker-build": {
       "dependsOn": ["build"],
       "command": "docker build -f packages/backend/Dockerfile . -t backend"
+    },
+    "typecheck": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "out-tsc/packages/backend",
+        "tsConfig": "packages/backend/tsconfig.check.json",
+        "packageJson": "packages/backend/package.json",
+        "main": "packages/backend/src/main.ts",
+        "assets": ["packages/backend/*.md"]
+      }
     }
   },
   "tags": []

@@ -29,6 +29,8 @@ services:
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
+      - ./node_modules/.prisma:/app/node_modules/.prisma
+      - ./node_modules/@prisma/client:/app/node_modules/@prisma/client
     env_file:
       - "./packages/backend/.env.local"
     environment:
@@ -47,27 +49,31 @@ services:
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
+      - ./node_modules/.prisma:/app/node_modules/.prisma
+      - ./node_modules/@prisma/client:/app/node_modules/@prisma/client
     env_file:
       - "./packages/backend/.env.local"
     environment:
       - VITE_PROXY_HOST=backend
     tty: true
   # utility services
-  # ex: npm run npm install axios
   npm:
     image: "node:18.15-alpine"
     working_dir: /app
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
+      - ./node_modules/.prisma:/app/node_modules/.prisma
+      - ./node_modules/@prisma/client:/app/node_modules/@prisma/client
     entrypoint: npm
-  # ex: npm run npm install axios
   prisma:
     image: "node:18.15-alpine"
     working_dir: /app
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
+      - ./node_modules/.prisma:/app/node_modules/.prisma
+      - ./node_modules/@prisma/client:/app/node_modules/@prisma/client
     env_file:
       - "packages/prisma/.env.local"
     entrypoint: ["npx", "prisma"]
@@ -77,6 +83,8 @@ services:
     volumes:
       - ./:/app
       - aha_node_modules:/app/node_modules
+      - ./node_modules/.prisma:/app/node_modules/.prisma
+      - ./node_modules/@prisma/client:/app/node_modules/@prisma/client
     entrypoint: ["npx", "nx"]
 volumes:
   aha_pg_data:

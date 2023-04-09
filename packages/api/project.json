@@ -35,6 +35,17 @@
           "codeCoverage": true
         }
       }
+    },
+    "typecheck": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "out-tsc/packages/api",
+        "tsConfig": "packages/api/tsconfig.check.json",
+        "packageJson": "packages/api/package.json",
+        "main": "packages/api/src/index.ts",
+        "assets": ["packages/api/*.md"]
+      }
     }
   },
   "tags": []

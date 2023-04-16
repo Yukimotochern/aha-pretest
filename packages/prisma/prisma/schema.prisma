@@ -21,5 +21,7 @@ generator zod {
 }
 
 model User {
-  email String @id
+  sub        String   @id
+  loginTimes Int
+  createdAt  DateTime @default(now())
 }

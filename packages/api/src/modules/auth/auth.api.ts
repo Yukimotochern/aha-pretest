@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { ProcedureStructure } from '../../api.types';
-import { response } from '../../backend/response';
+import { outputResponseSchema } from '../../backend/response';
 
 export const auth = {
   startSession: {
@@ -9,10 +9,21 @@ export const auth = {
       isRedirect: z.boolean(),
       sub: z.string(),
     }),
-    output: response(
+    output: outputResponseSchema(
       z.object({
         session: z.string().uuid(),
       })
     ),
   },
-} satisfies ProcedureStructure;
+  postAuthNonce: {
+    input: z.object({
+      method: z.string(),
+      email: z.optional(z.string()),
+    }),
+    output: outputResponseSchema(
+      z.object({
+        nonce: z.string(),
+      })
+    ),
+  },
+} as const satisfies ProcedureStructure;

@@ -1,6 +1,6 @@
 import { inferAsyncReturnType } from '@trpc/server';
 import { CreateFastifyContextOptions } from '@trpc/server/adapters/fastify';
-import { okResponse, errorResponse } from '@aha/api';
+import { statusLayerResponse } from '@aha/api';
 import { PrismaClient } from '@prisma/client';
 
 import { env } from '../environments/environment';
@@ -16,12 +16,11 @@ const prisma = new PrismaClient({
 export function createContext({ req, res }: CreateFastifyContextOptions) {
   const user = { name: req.headers.username ?? 'anonymous' };
   return {
-    req,
-    res,
+    fastifyReq: req,
+    fastifyRes: res,
     user,
     logger: req.log,
-    okResponse,
-    errorResponse,
+    res: statusLayerResponse,
     prisma,
     redis: req.server.redis,
   };

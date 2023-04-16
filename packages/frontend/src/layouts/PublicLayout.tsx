@@ -6,7 +6,7 @@ export const AuthLayout = () => {
       <div className="bg-[url('https://account.mongodb.com/static/images/auth/login_promo_mobile.png')] bg-cover bg-top bg-no-repeat py-3 px-3 text-center text-xl text-slate-200 underline underline-offset-4 md:hidden">
         Header
       </div>
-      <div className="flex flex-col justify-center py-2 px-9  md:w-[490px] md:p-8">
+      <div className="flex flex-col justify-center py-2 px-24 md:w-[490px] md:p-8">
         <Outlet />
       </div>
       <div className="hidden flex-1 md:block">

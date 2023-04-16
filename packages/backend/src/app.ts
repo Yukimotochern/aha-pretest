@@ -33,9 +33,15 @@ export const buildApp = (opts: FastifyServerOptions = {}) => {
   app.addHook('preHandler', bodyLogger);
 
   /* tRPC goes here */
-  app.register(fastifyTRPCPlugin, {
+  app.register(fastifyTRPCPlugin<typeof appRouter>, {
     prefix: '/api/trpc',
-    trpcOptions: { router: appRouter, createContext },
+    trpcOptions: {
+      router: appRouter,
+      createContext,
+      onError({ error, type, path, input, req }) {
+        req.log.error(error);
+      },
+    },
   });
 
   return app;

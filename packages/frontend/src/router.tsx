@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthLayout } from './layouts/AuthLayout';
-import { LandingPage } from './pages/LandingPage';
+import { LandingPage } from './pages/Landing/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { PrivateLayout } from './layouts/PrivateLayout';
 

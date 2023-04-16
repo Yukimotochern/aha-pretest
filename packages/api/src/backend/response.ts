@@ -1,29 +1,34 @@
 import { z } from 'zod';
 import {
-  ResponseErrorWithDataSchema,
+  ErrorResponseWithDataSchema,
   ErrorResponseCreator,
 } from './response.types';
 
-export const response = <dataSchema extends z.ZodTypeAny>(data: dataSchema) =>
-  new Response(
+export const outputResponseSchema = <dataSchema extends z.ZodTypeAny>(
+  data: dataSchema
+) =>
+  new OutputResponse(
     z.object({
       status: z.literal('ok'),
       data,
     })
   );
-export class Response<ResponseSchema extends z.ZodTypeAny = z.ZodTypeAny> {
-  constructor(public schema: ResponseSchema) {}
+export class OutputResponse<
+  OutputResponseSchema extends z.ZodTypeAny = z.ZodTypeAny
+> {
+  constructor(public schema: OutputResponseSchema) {}
+
   /* Add more error to a response schema with fluent api */
   error: <
     Code extends string,
     Message extends string,
-    ErrorOptions extends ResponseErrorWithDataSchema<Code, Message>
+    ErrorOptions extends ErrorResponseWithDataSchema<Code, Message>
   >(
     errorOptions: Readonly<ErrorOptions>
-  ) => Response<
+  ) => OutputResponse<
     z.ZodUnion<
       [
-        ResponseSchema,
+        OutputResponseSchema,
         z.ZodObject<
           unknown extends ErrorOptions['errorData']
             ? {
@@ -42,7 +47,7 @@ export class Response<ResponseSchema extends z.ZodTypeAny = z.ZodTypeAny> {
     >
   > = (errorOptions) => {
     const { code, message, errorData } = errorOptions;
-    return new Response(
+    return new OutputResponse(
       this.schema.or(
         z.object({
           status: z.literal('error'),
@@ -51,26 +56,27 @@ export class Response<ResponseSchema extends z.ZodTypeAny = z.ZodTypeAny> {
           ...(errorData && { errorData }),
         })
       )
-      // Conditional return type can not be inferred, disable eslint
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) as any;
+    ) as never; // prevent type error
   };
 }
 
-export const okResponse = <Data>(data: Data) =>
+export const ok = <Data>(data: Data) =>
   ({
     status: 'ok',
     data,
   } as const);
 
-export const errorResponse: ErrorResponseCreator = (error) => {
+export const error: ErrorResponseCreator = (error) => {
   const { code, message, errorData } = error;
   return {
     status: 'error',
     code,
     message,
     ...(errorData && { errorData }),
-    // Conditional return type can not be inferred, disable eslint
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } as any;
+  } as never; // prevent type error
+};
+
+export const statusLayerResponse = {
+  ok,
+  error,
 };

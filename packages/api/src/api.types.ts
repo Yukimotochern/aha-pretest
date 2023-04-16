@@ -5,11 +5,11 @@ import {
   ProcedureParams,
   AnyRootConfig,
 } from '@trpc/server';
-import { Response } from './backend/response';
+import { OutputResponse } from './backend/response';
 
 export interface ProcedureSchema {
   input: ZodTypeAny;
-  output: Response<ZodTypeAny>;
+  output: OutputResponse<ZodTypeAny>;
 }
 
 export interface ProcedureStructure {

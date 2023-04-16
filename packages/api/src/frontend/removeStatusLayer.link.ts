@@ -10,7 +10,7 @@ import {
   InvalidInputError,
   InvalidOutputError,
   StatusLayerError,
-} from './customApiErrors';
+} from './customErrors';
 
 export const unwrapStatusLayerLink: TRPCLink<AnyRouter> = () => {
   return ({ next, op }) => {
@@ -18,8 +18,8 @@ export const unwrapStatusLayerLink: TRPCLink<AnyRouter> = () => {
       const { path, input } = op;
       // Assert api object should contain input/output zod schema in path
       const validatorPaths = [`${path}.input`, `${path}.output.schema`];
-      const [inputValidator, outputValidator] = validatorPaths.map((vp) =>
-        lodashGet(api, vp)
+      const [inputValidator, outputValidator] = validatorPaths.map<unknown>(
+        (vp) => lodashGet(api, vp)
       );
       /* Input Schema Invalid */
       if (!(inputValidator instanceof ZodType)) {

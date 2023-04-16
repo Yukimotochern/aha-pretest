@@ -1,6 +1,6 @@
 import { ZodTypeAny } from 'zod';
 
-export interface BaseResponseError<
+export interface BaseErrorResponse<
   Code extends string,
   Message extends string
 > {
@@ -8,18 +8,18 @@ export interface BaseResponseError<
   message: Message;
 }
 
-export interface ResponseErrorWithDataSchema<
+export interface ErrorResponseWithDataSchema<
   Code extends string,
   Message extends string
-> extends BaseResponseError<Code, Message> {
+> extends BaseErrorResponse<Code, Message> {
   errorData?: ZodTypeAny;
 }
 
-export interface ResponseErrorWithData<
+export interface ErrorResponseWithData<
   ErrorType,
   Code extends string,
   Message extends string
-> extends BaseResponseError<Code, Message> {
+> extends BaseErrorResponse<Code, Message> {
   errorData?: ErrorType;
 }
 
@@ -27,7 +27,7 @@ export type ErrorResponseCreator = <
   ErrorType,
   Code extends string,
   Message extends string,
-  errorCreatorOptionType extends ResponseErrorWithData<ErrorType, Code, Message>
+  errorCreatorOptionType extends ErrorResponseWithData<ErrorType, Code, Message>
 >(
   error: Readonly<errorCreatorOptionType>
 ) => errorCreatorOptionType & { status: 'error' };

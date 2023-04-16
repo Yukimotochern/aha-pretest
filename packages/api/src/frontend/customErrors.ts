@@ -15,8 +15,16 @@ export class BaseCustomError extends Error {
     if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, new.target);
     }
-    (this as any).prototype = Object.create(new.target.prototype);
-    (this as any).constructor = this;
+    (
+      this as unknown as {
+        prototype: unknown;
+      }
+    ).prototype = Object.create(new.target.prototype);
+    (
+      this as unknown as {
+        constructor: unknown;
+      }
+    ).constructor = this;
   }
 }
 

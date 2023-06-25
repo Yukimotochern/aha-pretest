@@ -1,20 +1,31 @@
 import { useEffect } from 'react';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router';
-import { useAuth0 } from '@auth0/auth0-react';
-import _ from 'lodash';
+import { Outlet } from 'react-router';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { setUser, startSession } from '../redux/auth.slice';
+import { startSession } from '../redux/auth.slice';
 import { AppLoading } from '../components/AppLoading';
+import { ResendVerificationPage } from '../pages/ResendVerificationPage';
 
 export const PrivateLayout = () => {
   const dispatch = useAppDispatch();
-  const isAppLoading = useAppSelector((state) => !!state.auth.sessionId);
-  const navigate = useNavigate();
-  const { state } = useLocation();
-  /* start session after authenticated */
-  useEffect(() => {
-    dispatch(startSession());
-  }, [dispatch]);
+  const hasSession = useAppSelector((state) => !!state.auth.session);
+  const isVerified = useAppSelector((state) => state.auth.verified);
 
-  return isAppLoading ? <AppLoading /> : <Outlet />;
+  /* start session if not existed */
+  useEffect(() => {
+    if (!hasSession) {
+      dispatch(startSession());
+    }
+  }, [dispatch, hasSession]);
+
+  return hasSession ? (
+    isVerified ? (
+      <div className="m-auto mt-12 max-w-5xl">
+        <Outlet />
+      </div>
+    ) : (
+      <ResendVerificationPage />
+    )
+  ) : (
+    <AppLoading />
+  );
 };

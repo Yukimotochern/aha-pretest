@@ -3,13 +3,16 @@ import { Form, Input, Button, FormInstance, FormItemProps } from 'antd';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
-  passwordSignup,
-  passwordLogin,
+  auth0PasswordSignup,
+  auth0PasswordLogin,
   AuthFlows,
   EmailPasswordFormValues,
 } from '../../redux/auth.slice';
 import { emailRules } from '../../constants/emailRule';
-import { passwordRules } from '../../constants/passwordRules';
+import {
+  passwordRules,
+  confirmPasswordRules,
+} from '../../constants/passwordRules';
 
 interface EmailPasswordFormProps {
   form: FormInstance<EmailPasswordFormValues>;
@@ -41,9 +44,9 @@ export const EmailPasswordForm = ({
       setSubmitError,
     };
     if (authFlow === 'login') {
-      dispatch(passwordLogin(submitRequest));
+      dispatch(auth0PasswordLogin(submitRequest));
     } else {
-      dispatch(passwordSignup(submitRequest));
+      dispatch(auth0PasswordSignup(submitRequest));
     }
   }, [authFlow, dispatch, form]);
 
@@ -69,7 +72,22 @@ export const EmailPasswordForm = ({
           disabled={isAuthLoading}
         />
       </Form.Item>
-      <Form.Item className="mb-1">
+      {authFlow === 'signup' ? (
+        <Form.Item
+          name="confirm-password"
+          dependencies={['password']}
+          {...submitErrorSetting}
+          rules={confirmPasswordRules}
+        >
+          <Input.Password
+            id={`confirm-password=${authFlow}`}
+            placeholder="Confirm Password"
+            onChange={clearSubmitError}
+            disabled={isAuthLoading}
+          />
+        </Form.Item>
+      ) : null}
+      <Form.Item className="mb-1 mt-10">
         <Button type="primary" htmlType="submit" block loading={isAuthLoading}>
           Continue
         </Button>

@@ -23,3 +23,20 @@ export const passwordRules: FormItemProps['rules'] = [
     message: '* Password must contain at least one special character.',
   },
 ];
+
+export const confirmPasswordRules: FormItemProps['rules'] = [
+  {
+    required: true,
+    message: 'Please confirm your password!',
+  },
+  ({ getFieldValue }) => ({
+    validator(_, value) {
+      if (!value || getFieldValue('password') === value) {
+        return Promise.resolve();
+      }
+      return Promise.reject(
+        new Error('The two passwords that you entered do not match!')
+      );
+    },
+  }),
+];

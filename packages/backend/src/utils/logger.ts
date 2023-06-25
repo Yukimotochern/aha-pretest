@@ -8,6 +8,7 @@ const { isDev } = env;
 
 export const logger = pinoCaller(
   pino({
+    level: 'trace',
     ...(isDev && {
       transport: {
         target: 'pino-pretty',

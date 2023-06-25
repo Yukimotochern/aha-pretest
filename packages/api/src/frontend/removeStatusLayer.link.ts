@@ -16,7 +16,9 @@ export const unwrapStatusLayerLink: TRPCLink<AnyRouter> = () => {
   return ({ next, op }) => {
     return observable((observer) => {
       const { path, input } = op;
-      // Assert api object should contain input/output zod schema in path
+      /**
+       * The input/output path in path, if exist, should be valid zod schema
+       */
       const validatorPaths = [`${path}.input`, `${path}.output.schema`];
       const [inputValidator, outputValidator] = validatorPaths.map<unknown>(
         (vp) => lodashGet(api, vp)
@@ -76,12 +78,12 @@ export const unwrapStatusLayerLink: TRPCLink<AnyRouter> = () => {
             }
             /* Meaningful Error Flagged by Error Status */
             if (lodashGet(result.data, 'status') === 'error') {
-              const errorData = lodashGet(result.data, 'errorData');
               return observer.error(
                 wrapWithTRPCClientError(
-                  new StatusLayerError<typeof errorData>(
+                  new StatusLayerError(
                     'Server response with error status.',
-                    errorData
+                    result.data,
+                    path
                   )
                 )
               );

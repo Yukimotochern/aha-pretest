@@ -14,11 +14,11 @@ const prisma = new PrismaClient({
 });
 
 export function createContext({ req, res }: CreateFastifyContextOptions) {
-  const user = { name: req.headers.username ?? 'anonymous' };
   return {
+    fastify: res.server,
     fastifyReq: req,
     fastifyRes: res,
-    user,
+    env,
     logger: req.log,
     res: statusLayerResponse,
     prisma,

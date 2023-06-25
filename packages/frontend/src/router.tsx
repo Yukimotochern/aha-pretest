@@ -1,13 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { AuthLayout } from './layouts/AuthLayout';
-import { LandingPage } from './pages/Landing/LandingPage';
-import { DashboardPage } from './pages/DashboardPage';
+import { PublicLayout } from './layouts/PublicLayout';
+import { LandingPage } from './pages/Landing';
+import { DashboardPage } from './pages/Dashboard';
 import { PrivateLayout } from './layouts/PrivateLayout';
+import { AppLoading } from './components/AppLoading';
+import { store } from './redux/store';
+import { appLogin, verifyEmail } from './redux/auth.slice';
+import { WithDidMountAction } from './components/WithDidMountAction';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <AuthLayout />,
+    element: <PublicLayout />,
     children: [
       {
         path: 'landing',
@@ -25,6 +29,24 @@ export const router = createBrowserRouter([
         element: <DashboardPage />,
       },
     ],
+    errorElement: <div>error</div>,
+  },
+  {
+    path: '/auth-callback',
+    element: (
+      <WithDidMountAction action={() => store.dispatch(appLogin())}>
+        <AppLoading />
+      </WithDidMountAction>
+    ),
+    errorElement: <div>error</div>,
+  },
+  {
+    path: '/verify-email',
+    element: (
+      <WithDidMountAction action={() => store.dispatch(verifyEmail())}>
+        <AppLoading />
+      </WithDidMountAction>
+    ),
     errorElement: <div>error</div>,
   },
 ]);

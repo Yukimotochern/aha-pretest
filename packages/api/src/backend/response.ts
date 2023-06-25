@@ -4,16 +4,16 @@ import {
   ErrorResponseCreator,
 } from './response.types';
 
-export const outputResponseSchema = <dataSchema extends z.ZodTypeAny>(
+export const outputSchema = <dataSchema extends z.ZodTypeAny>(
   data: dataSchema
 ) =>
-  new OutputResponse(
+  new OutputSchema(
     z.object({
       status: z.literal('ok'),
       data,
     })
   );
-export class OutputResponse<
+export class OutputSchema<
   OutputResponseSchema extends z.ZodTypeAny = z.ZodTypeAny
 > {
   constructor(public schema: OutputResponseSchema) {}
@@ -25,7 +25,7 @@ export class OutputResponse<
     ErrorOptions extends ErrorResponseWithDataSchema<Code, Message>
   >(
     errorOptions: Readonly<ErrorOptions>
-  ) => OutputResponse<
+  ) => OutputSchema<
     z.ZodUnion<
       [
         OutputResponseSchema,
@@ -47,7 +47,7 @@ export class OutputResponse<
     >
   > = (errorOptions) => {
     const { code, message, errorData } = errorOptions;
-    return new OutputResponse(
+    return new OutputSchema(
       this.schema.or(
         z.object({
           status: z.literal('error'),
@@ -56,15 +56,23 @@ export class OutputResponse<
           ...(errorData && { errorData }),
         })
       )
-    ) as never; // prevent type error
+    ) as never;
   };
 }
 
-export const ok = <Data>(data: Data) =>
-  ({
+export function ok(): { status: 'ok' };
+export function ok<Data>(data: Data): { status: 'ok'; data: Data };
+export function ok<Data>(data?: Data) {
+  if (data === undefined) {
+    return {
+      status: 'ok',
+    };
+  }
+  return {
     status: 'ok',
     data,
-  } as const);
+  };
+}
 
 export const error: ErrorResponseCreator = (error) => {
   const { code, message, errorData } = error;
@@ -73,7 +81,7 @@ export const error: ErrorResponseCreator = (error) => {
     code,
     message,
     ...(errorData && { errorData }),
-  } as never; // prevent type error
+  } as never;
 };
 
 export const statusLayerResponse = {

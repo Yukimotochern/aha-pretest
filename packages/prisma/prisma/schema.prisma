@@ -12,16 +12,42 @@ generator zod {
   provider                  = "zod-prisma-types"
   output                    = "../src/generated"
   prismaClientPath          = "@prisma/client"
-  createInputTypes          = true
+  createInputTypes          = false
   createModelTypes          = true
-  createRelationValuesTypes = true
+  addIncludeType            = false
+  addSelectType             = false
+  createRelationValuesTypes = false
   createPartialTypes        = true
   useMultipleFiles          = false
   useDefaultValidators      = false
 }
 
 model User {
-  sub        String   @id
-  loginTimes Int
-  createdAt  DateTime @default(now())
+  sub                 String       @id
+  loginTimes          Int          @default(0)
+  email               String?
+  verified            Boolean      @default(false)
+  emailNonce          String?
+  emailNonceExpiredAt DateTime?
+  createdAt           DateTime     @default(now())
+  sessions            Session[]
+  profile             UserProfile?
+}
+
+model UserProfile {
+  id      String  @id @default(uuid()) /// @zod.custom.omit([input])
+  user    User    @relation(fields: [userSub], references: [sub])
+  userSub String  @unique /// @zod.custom.omit([input])
+  name    String?
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiredAt DateTime
+  active    Boolean
+  jwt       String
+  userSub   String
+  user      User     @relation(fields: [userSub], references: [sub])
 }

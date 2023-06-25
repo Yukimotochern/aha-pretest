@@ -10,10 +10,10 @@ export default defineConfig({
     port: 4200,
     host: '0.0.0.0',
     proxy: {
-      '/api': {
-        target: `http://${process.env.VITE_PROXY_HOST}:4000/api`,
+      '/trpc': {
+        target: `http://${process.env.VITE_PROXY_HOST}:4000/trpc`,
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path) => path.replace(/^\/trpc/, ''),
       },
     },
     fs: {

@@ -11,7 +11,7 @@ import { TRPCClientError } from '@trpc/client';
 import { ApiProcedurePaths } from './handleError.types';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-const voidFunc = () => {};
+const voidFunc: () => unknown = () => {};
 
 const defaultHandleOption = {
   shouldRunCallbackIfAlreadyHandled: false,
@@ -78,7 +78,7 @@ class ErrorHandler {
     InferredCustomError extends InvalidInputError<Get<API, Path>['input']>
   >(
     path: Path,
-    cb: (err: InferredCustomError['zodError']) => void = voidFunc,
+    cb: (err: InferredCustomError['zodError']) => unknown = voidFunc,
     handleOption: HandleOption = defaultHandleOption
   ) {
     const { err } = this;
@@ -107,7 +107,7 @@ class ErrorHandler {
     >
   >(
     path: Path,
-    cb: (err: InferredCustomError['zodError']) => void = voidFunc,
+    cb: (err: InferredCustomError['zodError']) => unknown = voidFunc,
     handleOption: HandleOption = defaultHandleOption
   ) {
     const { err } = this;
@@ -133,10 +133,12 @@ class ErrorHandler {
     Path extends ApiProcedurePaths,
     InferredCustomError extends StatusLayerError<
       z.infer<Get<API, Path>['output']['schema']> & { status: 'error' }
-    >
+    >,
+    Code extends Get<InferredCustomError['error'], 'code'>
   >(
     path: Path,
-    cb: (err: InferredCustomError['error']) => void = voidFunc,
+    code: Code,
+    cb: (err: InferredCustomError['error']) => unknown = voidFunc,
     handleOption: HandleOption = defaultHandleOption
   ) {
     const { err } = this;
@@ -149,7 +151,11 @@ class ErrorHandler {
     ): clientError is InferredCustomError {
       return cause instanceof StatusLayerError;
     }
-    if (isStatusLayerError(cause)) {
+    if (
+      isStatusLayerError(cause) &&
+      cause.path === path &&
+      cause.error.code === code
+    ) {
       return this.runCallbackBasedOnHandleOption(
         () => cb(cause.error),
         handleOption

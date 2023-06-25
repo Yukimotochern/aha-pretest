@@ -1,9 +1,8 @@
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Button, Typography, Form, Divider } from 'antd';
 
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import {
   AuthFlows,
   EmailPasswordFormValues,
@@ -11,13 +10,15 @@ import {
 } from '../../redux/auth.slice';
 import { EmailPasswordForm } from './EmailPasswordForm';
 import { SocialButton } from '../../components/SocialButton';
-import { trpc } from '../../trpc/client';
 
 export const LandingPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams({
+    action: 'signup',
+  });
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { loginWithRedirect, logout } = useAuth0();
-  const [authFlow, setAuthFlow] = useState<AuthFlows>('signup');
+  const isAuthLoading = useAppSelector((state) => state.auth.loading);
+  const authFlow: AuthFlows =
+    searchParams.get('flow') === 'login' ? 'login' : 'signup';
 
   const [loginForm] = Form.useForm<EmailPasswordFormValues>();
   const [signupForm] = Form.useForm<EmailPasswordFormValues>();
@@ -25,7 +26,9 @@ export const LandingPage = () => {
   const signupFormClassName = authFlow === 'login' ? 'hidden' : '';
 
   const handleChangeFlow = useCallback(() => {
-    setAuthFlow((prev) => (prev === 'login' ? 'signup' : 'login'));
+    setSearchParams((prev) => ({
+      flow: prev.get('flow') === 'login' ? 'signup' : 'login',
+    }));
     /* Bring values to another form */
     const formToCopyFrom = authFlow === 'login' ? loginForm : signupForm;
     const formToCopyTo = authFlow === 'login' ? signupForm : loginForm;
@@ -37,10 +40,10 @@ export const LandingPage = () => {
         formToCopyTo.validateFields([name]);
       }
     });
-  }, [authFlow, loginForm, signupForm]);
+  }, [authFlow, loginForm, signupForm, setSearchParams]);
 
   const handleGoogleContinue = useCallback(
-    () => dispatch(socialContinue('google')),
+    () => dispatch(socialContinue('google-oauth2')),
     [dispatch]
   );
   const handleFacebookContinue = useCallback(
@@ -69,64 +72,33 @@ export const LandingPage = () => {
         imgSrc="/google_logo.png"
       />
       <Divider plain>or</Divider>
-      <EmailPasswordForm
-        className={loginFormClassName}
-        form={loginForm}
-        authFlow="login"
-      />
-      <EmailPasswordForm
-        className={signupFormClassName}
-        form={signupForm}
-        authFlow="signup"
-      />
+      <div className="mt-2">
+        <EmailPasswordForm
+          className={loginFormClassName}
+          form={loginForm}
+          authFlow="login"
+        />
+        <EmailPasswordForm
+          className={signupFormClassName}
+          form={signupForm}
+          authFlow="signup"
+        />
+      </div>
       <div className="text-center">
         <Typography.Text>
           {authFlow === 'login'
             ? "Don't have an account?"
             : 'Already have an account?'}
-          <Button type="link" className="px-2" onClick={handleChangeFlow}>
+          <Button
+            type="link"
+            className="px-2"
+            onClick={handleChangeFlow}
+            disabled={isAuthLoading}
+          >
             {authFlow === 'login' ? 'Sign up' : 'Log in'}
           </Button>
         </Typography.Text>
       </div>
-      {/* @TODO delete below */}
-      <Button
-        onClick={() => {
-          loginWithRedirect({
-            appState: {
-              redirect: true,
-            },
-          });
-        }}
-      >
-        Log in
-      </Button>
-      <Button
-        onClick={() => {
-          loginWithRedirect({
-            authorizationParams: {
-              screen_hint: 'signup',
-            },
-            appState: {
-              redirect: true,
-            },
-          });
-        }}
-      >
-        Sign up
-      </Button>
-      <Button
-        onClick={() =>
-          trpc.auth.postAuthNonce.mutate({ method: '', email: '' })
-        }
-      >
-        set error
-      </Button>
-
-      <Button onClick={() => logout()}>Log out</Button>
-      <Button onClick={() => navigate('/app/dashboard')}>
-        Go to /app/dashboard
-      </Button>
     </>
   );
 };

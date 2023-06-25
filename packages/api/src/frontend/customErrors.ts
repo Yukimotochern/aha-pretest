@@ -48,7 +48,11 @@ export class InvalidOutputError<T = any> extends BaseCustomError {
 
 export class StatusLayerError<ErrorInStatusLayer> extends BaseCustomError {
   public override name = 'StatusLayerError' as const;
-  constructor(msg: string, public error: ErrorInStatusLayer) {
+  constructor(
+    msg: string,
+    public error: ErrorInStatusLayer,
+    public path: string
+  ) {
     super(msg);
   }
 }

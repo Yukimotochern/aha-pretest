@@ -2,3 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+
+html, body {
+  /* This is to overwrite the antd/dist/reset.css in App.tsx */
+  height: unset !important;
+}

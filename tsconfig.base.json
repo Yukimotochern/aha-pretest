@@ -28,10 +28,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "*": ["*", "out-tsc/*", "dist/*"],
       "@aha/api": ["packages/api/src/index.ts"],
       "@aha/backend": ["packages/backend/src/main.ts"],
-      "@aha/prisma": ["packages/prisma/src/index.ts"],
-      "*": ["*", "out-tsc/*", "dist/*"]
+      "@aha/prisma": ["packages/prisma/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

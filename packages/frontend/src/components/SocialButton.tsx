@@ -11,7 +11,7 @@ export const SocialButton = ({ onClick, imgSrc, name }: SocialButtonProps) => {
   const isAuthLoading = useAppSelector((state) => state.auth.loading);
   return (
     <Button
-      className="mt-3 mb-2 text-left"
+      className="mt-3 mb-2 overflow-hidden text-left"
       type="default"
       block
       onClick={onClick}

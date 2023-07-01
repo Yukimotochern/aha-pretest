@@ -53,14 +53,12 @@ export const LandingPage = () => {
 
   return (
     <>
-      <div className="text-center">
-        <Typography.Title level={2}>Welcome</Typography.Title>
-        <Typography.Text>
-          {`${
-            authFlow === 'login' ? 'Log in' : 'Sign up'
-          } to get-aha-job to continue to Aha pretest.`}
-        </Typography.Text>
-      </div>
+      <Typography.Title level={2}>Welcome</Typography.Title>
+      <Typography.Text>
+        {`${
+          authFlow === 'login' ? 'Log in' : 'Sign up'
+        } to get-aha-job to continue to Aha pretest.`}
+      </Typography.Text>
       <SocialButton
         name="Facebook"
         onClick={handleFacebookContinue}

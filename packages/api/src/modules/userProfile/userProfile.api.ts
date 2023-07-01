@@ -17,6 +17,7 @@ export const userProfile = {
       path: '/userProfile/patch',
       protect: true,
       tags: ['User Profile'],
+      description: 'This is used to change the username.',
     },
   },
   get: {
@@ -27,6 +28,7 @@ export const userProfile = {
       path: '/userProfile/get',
       protect: true,
       tags: ['User Profile'],
+      description: 'This will return the user profile.',
     },
   },
 } satisfies ProcedureStructure;

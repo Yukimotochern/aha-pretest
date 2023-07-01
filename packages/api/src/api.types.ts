@@ -10,8 +10,6 @@ import {
 import { OpenApiMeta } from 'trpc-openapi';
 import { OutputSchema } from './backend/response';
 
-// import { UnsetMarker } from '@trpc/server/src/core/internals/utils';
-
 export interface ProcedureSchema {
   input?: ZodTypeAny;
   output?: OutputSchema<ZodTypeAny>;

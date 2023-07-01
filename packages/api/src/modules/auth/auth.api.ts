@@ -22,6 +22,8 @@ export const auth = {
     openapi: {
       method: 'POST',
       path: '/auth/validateEmail',
+      description:
+        'This will validate the email an user had entered. The required nonce will be contained in the email and the frontend will hit this route with the nonce when clicked.',
       protect: false,
       tags: ['Auth'],
     },
@@ -33,8 +35,9 @@ export const auth = {
       message: 'Please use social sign in.',
     }),
     openapi: {
-      method: 'POST',
+      method: 'GET',
       path: '/auth/resendEmail',
+      description: 'This will resend the validation email for login user.',
       protect: true,
       tags: ['Auth'],
     },
@@ -47,6 +50,8 @@ export const auth = {
     openapi: {
       method: 'POST',
       path: '/auth/loginOrSignup',
+      description:
+        'The will register user or log user in. Use auth0 jwt to exchange the app jwt.',
       protect: false,
       tags: ['Auth'],
     },
@@ -59,6 +64,8 @@ export const auth = {
       path: '/auth/logout',
       protect: true,
       tags: ['Auth'],
+      description:
+        'This will clear the cookie that contains app jwt and invalidate all sessions created by this jwt',
     },
   },
   startSession: {
@@ -72,6 +79,8 @@ export const auth = {
       path: '/auth/startSession',
       protect: false,
       tags: ['Auth'],
+      description:
+        'Use app jwt cookie to start a new session. Will return the session id.',
     },
   },
   changePassword: {
@@ -97,10 +106,12 @@ export const auth = {
         message: 'Incorrect Password.',
       }),
     openapi: {
-      method: 'POST',
+      method: 'PATCH',
       path: '/auth/changePassword',
       protect: true,
       tags: ['Auth'],
+      description:
+        'Change user password with old password. Only for users using email to sign up.',
     },
   },
 } satisfies ProcedureStructure;

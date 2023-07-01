@@ -13,8 +13,6 @@ services:
   redis:
     image: "redis:7.0-alpine"
     restart: always
-    env_file:
-      - "./config/redis/.env.local"
     volumes:
       - "aha_redis_data:/data"
     ports:

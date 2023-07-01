@@ -12,12 +12,18 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 export const privateProcedure = t.procedure.use(
   async ({ ctx: { fastifyReq, prisma }, next }) => {
-    const nonce = fastifyReq.headers['authorization'];
-    if (!nonce) {
+    const authorization = fastifyReq.headers['authorization'];
+    const nonceMatch = /Bearer (?<nonce>.+)/.exec(authorization || '');
+    if (
+      !nonceMatch ||
+      !nonceMatch.groups ||
+      typeof nonceMatch.groups.nonce !== 'string'
+    ) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
       });
     }
+    const nonce = nonceMatch.groups.nonce;
     const session = await prisma.session.findFirst({
       where: {
         id: nonce,

@@ -18,6 +18,8 @@ export const env = {
   sendgridApiKey: process.env.SENDGRID_API_KEY || '',
   // Frontend
   frontendUrl: process.env.FRONTEND_URL || '',
+  // Backend
+  backendUrl: process.env.BACKEND_URL || '',
   // App Auth
   appJwtSecretKey: process.env.APP_JWT_SECRET_KEY || 'fakeKey',
   appJwtExpireMilliseconds:

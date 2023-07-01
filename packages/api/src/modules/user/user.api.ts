@@ -29,6 +29,8 @@ export const user = {
       path: '/user/getUserStatistics',
       protect: true,
       tags: ['User'],
+      description:
+        'Return user statistics calculated by the UTC offset provided.',
     },
   },
 } satisfies ProcedureStructure;

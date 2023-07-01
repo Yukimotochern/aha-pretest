@@ -61,7 +61,7 @@ export const trpcWithStatusLayer = createTRPCProxyClient<AppRouter>({
             auth: { session },
           } = store.getState();
           return {
-            authorization: session,
+            authorization: `Bearer ${session}`,
           };
         } else {
           return {};

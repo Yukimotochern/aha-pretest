@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: shtomcom/aha-backend:latest
+          envFrom:
+            - secretRef:
+                name: postgres-sc
+            - secretRef:
+                name: backend-sc
+          env:
+            - name: POSTGRES_HOST
+              value: postgres-sv.default
+            - name: POSTGRES_DATABASE_URL
+              value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):5432/$(POSTGRES_DB)
+            - name: FRONTEND_URL
+              value: https://get-aha-job.site
+            - name: BACKEND_URL
+              value: https://get-aha-job.site
+            - name: PRISMA_JS_CLIENT_PATH
+              value: node_modules/.prisma/client
+            - name: APP_JWT_EXPIRE_MILLISECONDS
+              value: "604800000"
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 4000
+          ports:
+            - containerPort: 4000
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-sv
+spec:
+  selector:
+    app: backend
+  type: NodePort
+  ports:
+    - port: 8400
+      targetPort: 4000

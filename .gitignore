@@ -6,6 +6,7 @@
 
 # secret
 .env.*
+*secret.kub.yaml
 
 # compiled output
 dist

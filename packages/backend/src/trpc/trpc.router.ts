@@ -1,12 +1,19 @@
-import type { TrpcRouterConformToApi } from '@aha/api';
+import { TrpcRouterConformToApi, trpcRouterBuilderStructure } from '@aha/api';
 import { generateOpenApiDocument } from 'trpc-openapi';
-import { router } from './trpc';
+import { publicProcedure, router } from './trpc';
 import { authProcedures } from '../modules/auth/auth.procedure';
 import { userProfileProcedures } from '../modules/userProfile/userProfile.procedure';
 import { userProcedure } from '../modules/user/user.procedure';
 import { env } from '../environments/environment';
 
+const { healthApi } = trpcRouterBuilderStructure;
+
 export const appRouter = router({
+  health: healthApi(publicProcedure).query(async ({ ctx }) =>
+    ctx.res.ok({
+      message: 'Server is health.',
+    })
+  ),
   auth: authProcedures,
   userProfile: userProfileProcedures,
   user: userProcedure,

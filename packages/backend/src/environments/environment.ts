@@ -2,10 +2,8 @@ export const env = {
   // Runtime Env
   isDev: process.env.NODE_ENV === 'development',
   // DB
-  redisHost: process.env.REDIS_HOST || '0.0.0.0',
   postgresDatabaseUrl: process.env.POSTGRES_DATABASE_URL,
   // Auth0 Auth
-  auth0AuthJwtSigningSecret: process.env.AUTH0_AUTH_JWT_SIGNING_SECRET,
   auth0AuthDomain: process.env.AUTH0_AUTH_DOMAIN,
   auth0AuthClientId: process.env.AUTH0_AUTH_CLIENT_ID,
   auth0AuthClientAudience: process.env.AUTH0_AUTH_AUDIENCE,

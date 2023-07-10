@@ -1,1 +1,3 @@
-
+.env.*
+*secret.kub.yaml
+node_modules

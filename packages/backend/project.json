@@ -67,8 +67,25 @@
       }
     },
     "docker-build": {
-      "dependsOn": ["build"],
-      "command": "docker build -f packages/backend/Dockerfile . -t backend"
+      "dependsOn": [
+        {
+          "target": "build",
+          "params": "forward"
+        }
+      ],
+      "command": "docker build -f packages/backend/Dockerfile . -t shtomcom/aha-backend",
+      "configurations": {
+        "production": {}
+      }
+    },
+    "docker-push": {
+      "dependsOn": [
+        {
+          "target": "docker-build",
+          "params": "forward"
+        }
+      ],
+      "command": "docker push shtomcom/aha-backend"
     },
     "typecheck": {
       "executor": "@nx/js:tsc",

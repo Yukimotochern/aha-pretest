@@ -22,7 +22,6 @@ export function createContext({ req, res }: CreateFastifyContextOptions) {
     logger: req.log,
     res: statusLayerResponse,
     prisma,
-    redis: req.server.redis,
   };
 }
 export type Context = inferAsyncReturnType<typeof createContext>;

@@ -1,3 +1,11 @@
+/**
+ * Install and generate prisma at runtime.
+ * Import here to make Nx generated package.json aware of prisma.
+ */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import 'prisma';
+
 import { buildApp } from './app';
 
 const server = buildApp();

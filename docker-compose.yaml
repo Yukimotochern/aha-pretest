@@ -10,13 +10,6 @@ services:
       - "aha_pg_data:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
-  redis:
-    image: "redis:7.0-alpine"
-    restart: always
-    volumes:
-      - "aha_redis_data:/data"
-    ports:
-      - "6379:6379"
   backend:
     build:
       context: .
@@ -30,10 +23,8 @@ services:
     env_file:
       - "./packages/backend/.env.local"
     environment:
-      - REDIS_HOST=redis
       - POSTGRES_HOST=postgres
     depends_on:
-      - redis
       - postgres
   frontend:
     build:
@@ -66,7 +57,7 @@ services:
       - ./:/app
       - node_modules:/app/node_modules
     env_file:
-      - "packages/prisma/.env.local"
+      - "packages/prisma/prisma/.env.local"
     entrypoint: ["npx", "prisma"]
   nx:
     image: "node:18.16-alpine"
@@ -77,5 +68,4 @@ services:
     entrypoint: ["npx", "nx"]
 volumes:
   aha_pg_data:
-  aha_redis_data:
   node_modules:

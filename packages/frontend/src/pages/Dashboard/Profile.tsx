@@ -17,8 +17,8 @@ export const Profile = () => {
 
   if (isLoading && !profile)
     return (
-      <div>
-        <Spin className="mx-auto" />;
+      <div className="flex flex-col items-center">
+        <Spin />
       </div>
     );
 

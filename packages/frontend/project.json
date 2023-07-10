@@ -78,6 +78,15 @@
       "options": {
         "command": "tsc -p packages/frontend/tsconfig.check.json"
       }
+    },
+    "docker-build": {
+      "command": "docker build -f packages/frontend/Dockerfile . -t shtomcom/aha-frontend",
+      "configurations": {
+        "production": {}
+      }
+    },
+    "docker-push": {
+      "command": "docker push shtomcom/aha-frontend"
     }
   },
   "tags": []

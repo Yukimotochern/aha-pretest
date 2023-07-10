@@ -168,7 +168,7 @@ export const appAuth0Logout = createAsyncThunk('auth/logout', async () => {
   try {
     await trpc.auth.logout.mutate();
     webAuth.logout({
-      returnTo: `${window.location.origin}/landing`,
+      returnTo: `${window.location.origin}/landing?flow=login`,
     });
   } catch (err) {
     console.log(err);

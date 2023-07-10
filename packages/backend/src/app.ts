@@ -2,14 +2,12 @@ import { fastify, FastifyServerOptions } from 'fastify';
 import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyCookie from '@fastify/cookie';
-import fastifyRedis from '@fastify/redis';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { fastifyTRPCOpenApiPlugin } from 'trpc-openapi';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
-import { env } from './environments/environment';
 import { logger, bodyLogger, genReqIdFunctionCreator } from './utils/logger';
 import { createContext } from './trpc/context';
 import { appRouter, trpcOpenApiDocument } from './trpc/trpc.router';
@@ -32,9 +30,6 @@ export const buildApp = (opts: FastifyServerOptions = {}) => {
     global: true,
   });
   app.register(fastifyCookie);
-  app.register(fastifyRedis, {
-    host: env.redisHost || '0.0.0.0',
-  });
 
   /* log body if present */
   app.addHook('preHandler', bodyLogger);

@@ -5,6 +5,12 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "dependsOn": [
+        {
+          "target": "copy",
+          "params": "forward"
+        }
+      ],
       "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {

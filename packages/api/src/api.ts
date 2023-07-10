@@ -9,8 +9,25 @@ import type {
 import { auth } from './modules/auth/auth.api';
 import { userProfile } from './modules/userProfile/userProfile.api';
 import { user } from './modules/user/user.api';
+import { z } from 'zod';
+import { outputSchema } from './backend/response';
 
 export const api = {
+  health: {
+    input: z.void(),
+    output: outputSchema(
+      z.object({
+        message: z.string(),
+      })
+    ),
+    openapi: {
+      method: 'GET',
+      path: '/health',
+      description: 'This is the health check route.',
+      protect: false,
+      tags: ['Heath Check'],
+    },
+  },
   auth,
   userProfile,
   user,

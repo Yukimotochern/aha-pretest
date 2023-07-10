@@ -19,7 +19,7 @@ export const PrivateLayout = () => {
 
   return hasSession ? (
     isVerified ? (
-      <div className="m-auto mt-12 max-w-5xl">
+      <div className="m-auto mt-12 max-w-5xl px-4 lg:px-0">
         <Outlet />
       </div>
     ) : (

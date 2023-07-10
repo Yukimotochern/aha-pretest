@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: get-aha-job
+  labels:
+    name: get-aha-job
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: get-aha-job
+    networking.gke.io/managed-certificates: managed-cert
+    networking.gke.io/v1beta1.FrontendConfig: ssl-redirect
+spec:
+  defaultBackend:
+    service:
+      name: frontend-sv
+      port:
+        number: 8080
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /api
+            backend:
+              service:
+                name: backend-sv
+                port:
+                  number: 8400
+          - pathType: Prefix
+            path: /trpc
+            backend:
+              service:
+                name: backend-sv
+                port:
+                  number: 8400
+          - pathType: Prefix
+            path: /docs
+            backend:
+              service:
+                name: backend-sv
+                port:
+                  number: 8400
+          - pathType: Prefix
+            path: /documentation
+            backend:
+              service:
+                name: backend-sv
+                port:
+                  number: 8400
+          - pathType: Prefix
+            path: /openapi.json
+            backend:
+              service:
+                name: backend-sv
+                port:
+                  number: 8400

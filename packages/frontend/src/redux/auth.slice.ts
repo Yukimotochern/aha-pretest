@@ -103,12 +103,16 @@ export const auth0PasswordSignup = createAsyncThunk(
         },
         (err, result) => {
           if (err) {
-            console.log(err);
-            apiErrorMsg();
+            apiErrorMsg(
+              Number(err.statusCode) === 400
+                ? 'You may have signed up before. Try to login.'
+                : undefined
+            );
             reject(err);
+          } else {
+            dispatch(auth0PasswordLogin(passwordSubmitRequest));
+            resolve(result);
           }
-          dispatch(auth0PasswordLogin(passwordSubmitRequest));
-          resolve(result);
         }
       )
     )

@@ -5,11 +5,11 @@ metadata:
   labels:
     name: get-aha-job
   annotations:
-    kubernetes.io/ingress.class: gce
     kubernetes.io/ingress.global-static-ip-name: get-aha-job
     networking.gke.io/managed-certificates: managed-cert
     networking.gke.io/v1beta1.FrontendConfig: ssl-redirect
 spec:
+  ingressClassName: gce
   defaultBackend:
     service:
       name: frontend-sv

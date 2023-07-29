@@ -8,7 +8,7 @@ import { store } from './redux/store';
 import { appLogin, verifyEmail } from './redux/auth.slice';
 import { WithDidMountAction } from './components/WithDidMountAction';
 
-export const router = createBrowserRouter([
+export const router: ReturnType<typeof createBrowserRouter> = createBrowserRouter([
   {
     path: '/',
     element: <PublicLayout />,

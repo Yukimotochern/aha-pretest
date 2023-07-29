@@ -52,6 +52,7 @@ spec:
   selector:
     app: backend
   type: NodePort
+  # type: LoadBalancer
   ports:
     - port: 8400
       targetPort: 4000

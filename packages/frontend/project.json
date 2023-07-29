@@ -13,7 +13,8 @@
       },
       "configurations": {
         "development": {
-          "mode": "development"
+          "mode": "development",
+          "skipTypeCheck": true
         },
         "production": {
           "mode": "production"

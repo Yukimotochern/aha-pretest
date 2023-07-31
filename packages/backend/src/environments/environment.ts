@@ -18,6 +18,7 @@ export const env = {
   frontendUrl: process.env.FRONTEND_URL || '',
   // Backend
   backendUrl: process.env.BACKEND_URL || '',
+  backendHost: process.env.BACKEND_HOST || '0.0.0.0',
   // App Auth
   appJwtSecretKey: process.env.APP_JWT_SECRET_KEY || 'fakeKey',
   appJwtExpireMilliseconds:

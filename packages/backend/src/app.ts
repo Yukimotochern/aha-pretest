@@ -32,7 +32,7 @@ export const buildApp = (opts: FastifyServerOptions = {}) => {
   app.register(fastifyCookie);
 
   /* log body if present */
-  app.addHook('preHandler', bodyLogger);
+  // app.addHook('preHandler', bodyLogger);
 
   /* tRPC goes here */
   app.register(fastifyTRPCPlugin<typeof appRouter>, {

@@ -7,13 +7,14 @@
 import 'prisma';
 
 import { buildApp } from './app';
+import { env } from './environments/environment';
 
 const server = buildApp();
 
 server.listen(
   {
     port: 4000,
-    host: '0.0.0.0',
+    host: env.backendHost,
   },
   (err) => {
     if (err) {

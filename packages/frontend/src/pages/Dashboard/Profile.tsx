@@ -70,7 +70,7 @@ export const Profile = () => {
           <span>
             {profile.name}
             <Button
-              type="ghost"
+              type="dashed"
               className="ml-1"
               size="small"
               icon={<EditOutlined />}

@@ -21,9 +21,8 @@
       "configurations": {
         "development": {},
         "production": {
-          "generateLockfile": true,
-          "extractLicenses": true,
           "generatePackageJson": true,
+          "generateLockfile": true,
           "optimization": true
         }
       }
